@@ -155,29 +155,51 @@ function App() {
 
           <div className="order-3 flex w-full items-center justify-center gap-2 md:order-none md:w-auto md:flex-1 md:gap-1">
             <div className="flex items-center gap-3 md:gap-4">
-              <a className={`font-rubik font-normal transition-all ${isFloatingNav ? 'text-xs md:text-sm' : 'text-sm md:text-base'}`}>Boutique</a>
-              <a className={`font-rubik font-normal transition-all ${isFloatingNav ? 'text-xs md:text-sm' : 'text-sm md:text-base'}`}>Le Gang</a>
+              <a
+                href={withBase('/boutique')}
+                className={`font-rubik font-normal transition-all ${isFloatingNav ? 'text-xs md:text-sm' : 'text-sm md:text-base'}`}
+              >
+                Boutique
+              </a>
+              <a
+                href={withBase('/gang')}
+                className={`font-rubik font-normal transition-all ${isFloatingNav ? 'text-xs md:text-sm' : 'text-sm md:text-base'}`}
+              >
+                Le Gang
+              </a>
             </div>
-            <img
-              src={withBase('/Agence_Voyage_Logo_Entreprise_Marque_Identite_Rose_Rouge-removebg-preview.webp')}
-              alt="Les Crâneurs"
-              className={`object-contain transition-all ${isFloatingNav ? 'h-[56px] w-[56px] md:h-[72px] md:w-[72px]' : 'h-[72px] w-[72px] md:h-[108px] md:w-[108px]'}`}
-            />
+            <a href={withBase('/')}>
+              <img
+                src={withBase('/Agence_Voyage_Logo_Entreprise_Marque_Identite_Rose_Rouge-removebg-preview.webp')}
+                alt="Les Crâneurs"
+                className={`object-contain transition-all ${isFloatingNav ? 'h-[56px] w-[56px] md:h-[72px] md:w-[72px]' : 'h-[72px] w-[72px] md:h-[108px] md:w-[108px]'}`}
+              />
+            </a>
             <div className="flex items-center gap-3 md:gap-4">
-              <a className={`font-rubik font-normal transition-all ${isFloatingNav ? 'text-xs md:text-sm' : 'text-sm md:text-base'}`}>Journal</a>
-              <a className={`font-rubik font-normal transition-all ${isFloatingNav ? 'text-xs md:text-sm' : 'text-sm md:text-base'}`}>Contact</a>
+              <a
+                href={withBase('/journal')}
+                className={`font-rubik font-normal transition-all ${isFloatingNav ? 'text-xs md:text-sm' : 'text-sm md:text-base'}`}
+              >
+                Journal
+              </a>
+              <a
+                href={withBase('/contact')}
+                className={`font-rubik font-normal transition-all ${isFloatingNav ? 'text-xs md:text-sm' : 'text-sm md:text-base'}`}
+              >
+                Contact
+              </a>
             </div>
           </div>
 
           <div className="flex w-auto items-center justify-end gap-4 text-anthracite md:w-[220px]">
             <Search size={isFloatingNav ? 17 : 19} strokeWidth={1.8} />
             <UserRound size={isFloatingNav ? 17 : 19} strokeWidth={1.8} />
-            <div className="relative">
+            <a href={withBase('/panier')} className="relative">
               <ShoppingBag size={isFloatingNav ? 17 : 19} strokeWidth={1.8} />
               <span className="absolute -right-2 -top-2 grid h-4 w-4 place-items-center rounded-full bg-anthracite text-[9px] font-semibold text-white">
                 2
               </span>
-            </div>
+            </a>
           </div>
         </nav>
       </header>
@@ -216,9 +238,12 @@ function App() {
               </p>
 
               <div className="mt-6 flex w-full items-center justify-around gap-3 md:mt-7 md:w-[560px] md:gap-[18px]">
-                <button className="rounded-full bg-moutarde px-6 py-2 font-rubik text-[11px] uppercase tracking-[0.22em] text-white">
+                <a
+                  href={withBase('/boutique')}
+                  className="rounded-full bg-moutarde px-6 py-2 font-rubik text-[11px] uppercase tracking-[0.22em] !text-white no-underline visited:!text-white hover:!text-white"
+                >
                   Explorer la collection
-                </button>
+                </a>
                 <a className="border-b border-moutarde pb-[1px] font-rubik text-[11px] uppercase tracking-[0.22em] text-anthracite">
                   Le gang
                 </a>
@@ -395,13 +420,14 @@ function App() {
                 <h3 className="min-h-[48px] font-cormorant text-[30px] leading-[1.05] text-anthracite">{product.name}</h3>
                 <div className="mt-2 flex items-center justify-between pb-[15px]">
                   <p className="font-rubik text-[26px] font-semibold leading-none text-anthracite">{product.price}</p>
-                  <button
-                    className={`rounded-full px-4 py-2 font-rubik text-[10px] uppercase tracking-[0.18em] text-white ${
+                  <a
+                    href={withBase('/product')}
+                    className={`rounded-full px-4 py-2 font-rubik text-[10px] uppercase tracking-[0.18em] !text-white no-underline visited:!text-white hover:!text-white ${
                       index % 2 === 0 ? 'bg-moutarde' : 'bg-anthracite'
                     }`}
                   >
                     Ajouter +
-                  </button>
+                  </a>
                 </div>
               </article>
             ))}
@@ -553,12 +579,13 @@ function App() {
                           {item.product}
                         </span>
                       </div>
-                      <button
-                        className="flex h-[38px] items-center justify-center self-end rounded-full px-[14px] font-rubik text-[10px] uppercase tracking-[1.4px] text-white"
+                      <a
+                        href={withBase('/product')}
+                        className="flex h-[38px] items-center justify-center self-end rounded-full px-[14px] font-rubik text-[10px] uppercase tracking-[1.4px] !text-white no-underline visited:!text-white hover:!text-white"
                         style={{ backgroundColor: item.cta }}
                       >
                         Acheter
-                      </button>
+                      </a>
                     </div>
                   </div>
                 </article>
@@ -720,7 +747,7 @@ function App() {
         type="button"
         aria-label="Retour en haut"
         onClick={handleBackToTop}
-        className="fixed bottom-5 right-5 z-50 grid h-12 w-12 place-items-center rounded-full bg-[#728B75] text-white shadow-lg transition hover:scale-105"
+        className="fixed bottom-5 right-5 z-50 grid h-12 w-12 place-items-center rounded-full bg-[#D4A373] text-white shadow-lg transition hover:scale-105"
       >
         <PawPrint size={18} className="rotate-[310deg]" fill="currentColor" strokeWidth={1.6} />
       </button>
