@@ -1,4 +1,5 @@
-﻿import {
+﻿import { useEffect, useState } from 'react'
+import {
   Bone,
   Facebook,
   Instagram,
@@ -14,25 +15,25 @@ const products = [
     name: 'Laisse Sauge',
     category: 'LAISSE',
     price: '89€',
-    image: '/laisse.jpg',
+    image: '/laisse.webp',
   },
   {
     name: 'Snood Velours',
     category: 'SNOOD',
     price: '49€',
-    image: '/snood.jpg',
+    image: '/snood.webp',
   },
   {
     name: 'Collier Rivage',
     category: 'COLLIER',
     price: '64€',
-    image: '/collier.jpg',
+    image: '/collier.webp',
   },
   {
     name: 'Harnais Atelier',
     category: 'HARNAIS',
     price: '124€',
-    image: '/harnais.jpg',
+    image: '/harnais.webp',
   },
 ]
 
@@ -43,7 +44,7 @@ const gang = [
     review:
       "\"Le harnais est canon et surtout super confortable. Luna court partout sans gêne, et tout le monde nous demande d'où il vient.\"",
     product: 'Harnais Atelier',
-    image: '/harnais.jpg',
+    image: '/harnais.webp',
     cta: '#D4A373',
   },
   {
@@ -52,7 +53,7 @@ const gang = [
     review:
       "\"Le bandana tient bien en place et la matière est top. On l'a pris pour les sorties du week-end et il ne le quitte plus.\"",
     product: 'Snood Velours',
-    image: '/snood.jpg',
+    image: '/snood.webp',
     cta: '#2D3436',
   },
   {
@@ -61,7 +62,7 @@ const gang = [
     review:
       '"Très belle qualité, la laisse est douce en main et le rendu est super chic. Livraison rapide, je recommande sans hésiter."',
     product: 'Laisse Moutarde',
-    image: '/laisse.jpg',
+    image: '/laisse.webp',
     cta: '#D4A373',
   },
 ]
@@ -72,7 +73,7 @@ const articles = [
     time: '6 min',
     title: 'Bien choisir la taille du harnais',
     text: 'Mesures clés, points de confort et astuces simples pour trouver le fit parfait selon la morphologie de ton chien.',
-    image: '/harnais.jpg',
+    image: '/harnais.webp',
     badgeBg: '#F0F4F1',
     badgeText: '#728B75',
     titleClass: 'text-[44px] leading-[0.94]',
@@ -82,7 +83,7 @@ const articles = [
     time: '4 min',
     title: 'Bandana, snood, collier : les bons mix',
     text: 'Nos associations préférées pour un look cohérent, chic et pratique, en ville comme en balade du week-end.',
-    image: '/snood.jpg',
+    image: '/snood.webp',
     badgeBg: '#FDF2F2',
     badgeText: '#D4A373',
     titleClass: 'text-[44px] leading-[0.94]',
@@ -92,7 +93,7 @@ const articles = [
     time: '5 min',
     title: 'Comment entretenir ses accessoires',
     text: 'Lavage, séchage, rangement: le protocole maison pour garder tes pièces belles, propres et durables dans le temps.',
-    image: '/collier.jpg',
+    image: '/collier.webp',
     badgeBg: '#F0F4F1',
     badgeText: '#728B75',
     titleClass: 'text-[36px] leading-[0.95]',
@@ -100,41 +101,77 @@ const articles = [
 ]
 
 function App() {
+  const [isFloatingNav, setIsFloatingNav] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setIsFloatingNav(window.scrollY > 40)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const handleBackToTop = () => {
+    const startY = window.scrollY
+    const duration = 900
+    let startTime = null
+
+    const easeInOutCubic = (t) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp
+      const elapsed = timestamp - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      const eased = easeInOutCubic(progress)
+
+      window.scrollTo(0, startY * (1 - eased))
+      if (progress < 1) window.requestAnimationFrame(step)
+    }
+
+    window.requestAnimationFrame(step)
+  }
+
   return (
     <div className="bg-sable text-anthracite">
       <div className="flex h-12 items-center justify-center bg-[#728B75] text-center font-rubik text-[11px] tracking-[0.16em] text-white">
         -20% sur la gamme SNOODS | Code SNOODS2026
       </div>
 
-      <header className="bg-sable">
-        <nav className="mx-auto flex w-full max-w-[1440px] flex-wrap items-center justify-between gap-y-3 border-b border-anthracite/12 px-4 py-3 md:h-[120px] md:flex-nowrap md:gap-y-0 md:px-[52px] md:py-0">
+      <header className="relative h-[96px] bg-sable md:h-[120px]">
+        <nav
+          className={`left-1/2 z-40 flex w-[calc(100%-16px)] -translate-x-1/2 flex-wrap items-center justify-between gap-y-3 px-4 py-3 transition-all duration-500 ease-out md:flex-nowrap md:gap-y-0 md:px-[52px] ${
+            isFloatingNav
+              ? 'fixed top-2 h-[74px] max-w-[1180px] rounded-2xl border border-anthracite/12 bg-sable/95 shadow-lg backdrop-blur'
+              : 'absolute top-0 h-[96px] max-w-[1440px] border-b border-anthracite/12 bg-sable md:h-[120px]'
+          }`}
+        >
           <div className="flex w-auto items-center gap-4 text-anthracite md:w-[220px]">
-            <Instagram size={19} strokeWidth={1.8} />
-            <Facebook size={19} strokeWidth={1.8} />
-            <Twitter size={19} strokeWidth={1.8} />
+            <Instagram size={isFloatingNav ? 17 : 19} strokeWidth={1.8} />
+            <Facebook size={isFloatingNav ? 17 : 19} strokeWidth={1.8} />
+            <Twitter size={isFloatingNav ? 17 : 19} strokeWidth={1.8} />
           </div>
 
           <div className="order-3 flex w-full items-center justify-center gap-2 md:order-none md:w-auto md:flex-1 md:gap-1">
             <div className="flex items-center gap-3 md:gap-4">
-              <a className="font-rubik text-sm font-normal md:text-base">Boutique</a>
-              <a className="font-rubik text-sm font-normal md:text-base">Le Gang</a>
+              <a className={`font-rubik font-normal transition-all ${isFloatingNav ? 'text-xs md:text-sm' : 'text-sm md:text-base'}`}>Boutique</a>
+              <a className={`font-rubik font-normal transition-all ${isFloatingNav ? 'text-xs md:text-sm' : 'text-sm md:text-base'}`}>Le Gang</a>
             </div>
             <img
-              src="/Agence_Voyage_Logo_Entreprise_Marque_Identite_Rose_Rouge-removebg-preview.png"
+              src="/Agence_Voyage_Logo_Entreprise_Marque_Identite_Rose_Rouge-removebg-preview.webp"
               alt="Les Crâneurs"
-              className="h-[72px] w-[72px] object-contain md:h-[108px] md:w-[108px]"
+              className={`object-contain transition-all ${isFloatingNav ? 'h-[56px] w-[56px] md:h-[72px] md:w-[72px]' : 'h-[72px] w-[72px] md:h-[108px] md:w-[108px]'}`}
             />
             <div className="flex items-center gap-3 md:gap-4">
-              <a className="font-rubik text-sm font-normal md:text-base">Journal</a>
-              <a className="font-rubik text-sm font-normal md:text-base">Contact</a>
+              <a className={`font-rubik font-normal transition-all ${isFloatingNav ? 'text-xs md:text-sm' : 'text-sm md:text-base'}`}>Journal</a>
+              <a className={`font-rubik font-normal transition-all ${isFloatingNav ? 'text-xs md:text-sm' : 'text-sm md:text-base'}`}>Contact</a>
             </div>
           </div>
 
           <div className="flex w-auto items-center justify-end gap-4 text-anthracite md:w-[220px]">
-            <Search size={19} strokeWidth={1.8} />
-            <UserRound size={19} strokeWidth={1.8} />
+            <Search size={isFloatingNav ? 17 : 19} strokeWidth={1.8} />
+            <UserRound size={isFloatingNav ? 17 : 19} strokeWidth={1.8} />
             <div className="relative">
-              <ShoppingBag size={19} strokeWidth={1.8} />
+              <ShoppingBag size={isFloatingNav ? 17 : 19} strokeWidth={1.8} />
               <span className="absolute -right-2 -top-2 grid h-4 w-4 place-items-center rounded-full bg-anthracite text-[9px] font-semibold text-white">
                 2
               </span>
@@ -146,7 +183,7 @@ function App() {
       <section
         className="relative min-h-[100dvh] overflow-hidden bg-[#8f8f8f]"
         style={{
-          backgroundImage: "url('/image 24.png')",
+          backgroundImage: "url('/image 24.webp')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -374,7 +411,7 @@ function App() {
         <div className="mx-auto flex max-w-[1260px] flex-col gap-8 md:items-center md:flex-row md:gap-12">
           <div className="flex w-full flex-col gap-[18px] md:h-[704px] md:w-[56%]">
             <div className="relative h-[420px] overflow-hidden rounded-[28px] border border-anthracite/[0.08] bg-sauge md:h-[600px] md:rounded-[36px]">
-              <img src="/harnais.jpg" alt="Depuis notre atelier" className="h-full w-full object-cover" />
+              <img src="/harnais.webp" alt="Depuis notre atelier" className="h-full w-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-b from-black/[0.03] to-black/[0.30]" />
 
               <div className="absolute left-6 top-6 rounded-full bg-sable/90 px-3 py-[9px]">
@@ -676,8 +713,19 @@ function App() {
           </div>
         </div>
       </footer>
+
+      <button
+        type="button"
+        aria-label="Retour en haut"
+        onClick={handleBackToTop}
+        className="fixed bottom-5 right-5 z-50 grid h-12 w-12 place-items-center rounded-full bg-[#728B75] text-white shadow-lg transition hover:scale-105"
+      >
+        <PawPrint size={18} className="rotate-[310deg]" fill="currentColor" strokeWidth={1.6} />
+      </button>
     </div>
   )
 }
 
 export default App
+
+
